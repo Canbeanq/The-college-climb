@@ -14,6 +14,8 @@
 
 final int TOTAL_HOURS = 168;
 final int MAX_WEEKS = 15;
+int startTime;
+int levelTime;
 
 // ---------- game state ----------
 String screen = "start";   // start, planner, platformer, summary, end
@@ -117,7 +119,7 @@ void draw() {
   else if (screen.equals("platformer")) drawPlatformer();
   else if (screen.equals("summary"))   drawSummary();
   else if (screen.equals("end"))       drawEndScreen();
-  time(intHealth);
+  
  
 }
 
@@ -285,6 +287,7 @@ void loadLevel(int lvl) {
   walkL = false;
   walkR = false;
   screen = "platformer";
+  startTime = millis();
   
   // loads the timer that calculates the time the player has in the level
  
@@ -299,6 +302,8 @@ void drawPlatformer() {
   rect(0, ground, width, height - ground);
 
   updatePlayer();
+  time(intHappiness);
+
 
   // platforms
   for (int i = 0; i < levelPlats[currentLevel].length; i++) {
@@ -389,7 +394,7 @@ void updatePlayer() {
     }
   }
   //calculates the time the player has in each level
-  time(intHealth);
+
 }
 
 // draws a platform and returns {x, y, w, h} for collision
@@ -558,14 +563,14 @@ void drawButton(String label, float x, float y, float w, float h, int ts) {
 }
 
 // function that calculates the time the player has in the level
-void time(int health){
-  int levelTime =  (health/2)- 20;
-  for (int i=0; i<levelTime; i++){
-    levelTime = levelTime - 1;
+void time(int happiness){
+  int timeLimit =  (happiness/3)- 5;
+  int ellapsedTime = (millis()-startTime)/1000;
+  int levelTime = timeLimit - ellapsedTime;
+  if (levelTime <= 0) {
+    println("you lost");
+  
   }
-   if (levelTime == 0){
-      resetGame();
-    }
   
   println(levelTime);
   
