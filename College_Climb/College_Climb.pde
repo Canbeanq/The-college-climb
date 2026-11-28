@@ -17,6 +17,12 @@ final int MAX_WEEKS = 15;
 int startTime;
 int levelTime;
 
+// load the assets 
+
+PImage coin, homework, food, player, sleep, party;
+
+
+
 // ---------- game state ----------
 String screen = "start";   // start, planner, platformer, summary, end
 int intWeeks, intGrades, intHappiness, intHealth, intMoney, brokeWeeks;
@@ -89,6 +95,13 @@ void setup() {
   platformImg = loadImage("platform_.png");
   coinImg     = loadImage("coin_.png");
   resetGame();
+    
+  coin = loadImage("coin.png");
+  player = loadImage("player.png");
+  party = loadImage("party.png");
+  food = loadImage("food.png");
+  sleep = loadImage("sleep.png");
+  homework = loadImage("homework.png");
 }
 
 // sets week back to 1, stats to starting values, goes to start screen
@@ -315,7 +328,7 @@ void drawPlatformer() {
   for (int i = 0; i < levelCoins[currentLevel].length; i++) {
     if (!got[i]) {
       int[] c = levelCoins[currentLevel][i];
-      int[] pos = collectible(coinImg, c[0], c[1]);
+      int[] pos = collectible(coin, c[0], c[1]);
       // collision: player rectangle vs coin box (30 x 30)
       if (charX < pos[0] + 30 && charX + charLength > pos[0] &&
           charY < pos[1] + 30 && charY + charHeight > pos[1]) {
@@ -537,6 +550,9 @@ void keyPressed() {
   }
   if (keyCode == RIGHT) walkR = true;
   if (keyCode == LEFT)  walkL = true;
+  if (key == 's' || key == 'S') {
+    save("screenshot_" + frameCount + ".png");
+  }
 }
 
 void keyReleased() {
